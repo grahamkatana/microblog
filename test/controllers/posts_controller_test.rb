@@ -23,9 +23,14 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should show post in descending order" do
+    get posts_url, as: :json
+    assert_response :success
+  end
+
   test "should update post" do
     patch post_url(@post), params: { post: { body: @post.body, title: @post.title } }, as: :json
-    assert_response :success
+    assert_equal Post.order(created_at: :desc), assigns(:posts)
   end
 
   test "should destroy post" do
